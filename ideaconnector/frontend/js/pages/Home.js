@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
+const axios = require('axios');
 
 const Home = () => {
-  const [showBugComponent, setShowBugComponent] = useState(false);
+  const [value, setText] = useState('');
+  const [bestSuggest, setSuggest] = useState({});
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const getSimilar = () => {
+    const request = axios.post('localhost:3000', { query: value });
+    setSuggest(request['bestSuggest']);
+  };
 
   return (
-    <>
-      <button type="button" onClick={() => setShowBugComponent(true)}>
-        Click to test if Sentry is capturing frontend errors! (Should only work in Production)
+    <div>
+      <textarea
+        id="in"
+        rows="15"
+        cols="50"
+        placeholder="add your note here"
+        onChange={handleChange}
+      ></textarea>
+      <button id="Get similar" onClick="">
+        Get similar
       </button>
-      {showBugComponent && showBugComponent.field.notexist}
-    </>
+      <button id="Save">Save</button>
+    </div>
   );
 };
 
